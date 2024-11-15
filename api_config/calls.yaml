@@ -51,3 +51,13 @@
         - capital
       fields_map:
         title: "title"
+- method: "bench"
+  backend:
+    - method: "GET"
+      url: 'http://nginx/residence_list.json'
+      allow: 
+        - residence_list
+    - method: "GET"
+      url: 'http://nginx/website_status.json'
+      allow: 
+        - website_status
