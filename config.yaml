@@ -1,7 +1,7 @@
 server:
   listen: ":8080"
-  max_requests: 100
-  max_requests_per_conn: 10
+  max_requests: 1000
+  max_requests_per_conn: 1000
 deriv:
   endpoint: "wss://ws.derivws.com/websockets/v3"
 otel:
@@ -13,4 +13,3 @@ api_source:
     servers: "etcd:2379"
     prefix: "api::"
   path: "./runtime/api_config"
-   

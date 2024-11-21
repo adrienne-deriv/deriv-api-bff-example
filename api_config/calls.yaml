@@ -1,47 +1,47 @@
 - method: "aggregate"
   params:
-    country: 
+    country:
       type: "string"
   backend:
-    - allow: 
+    - allow:
         - virtual_company
         - name
       fields_map:
         financial_company: "financial"
         gaming_company: "gaming"
-      request: 
+      request:
         landing_company: "${params.country}"
-    - allow: 
+    - allow:
         - api_call_limits
         - clients_country
       request:
         website_status: 1
 - method: "chain"
   backend:
-    - depends_on: 
+    - depends_on:
         - "website_status"
-      allow: 
+      allow:
         - virtual_company
         - name
       fields_map:
         financial_company: "financial"
         gaming_company: "gaming"
       request:
-        landing_company: '${resp.website_status.clients_country}'
+        landing_company: "${resp.website_status.clients_country}"
     - name: "website_status"
-      allow: 
+      allow:
         - api_call_limits
         - clients_country
-      request: 
+      request:
         website_status: 1
 - method: "config_country"
   params:
-    country: 
+    country:
       type: "string"
   backend:
     - method: "GET"
-      url: 'http://nginx/country/${params.country}.json'
-      allow: 
+      url: "http://nginx/country/${params.country}.json"
+      allow:
         - region
         - subregion
         - name
@@ -54,10 +54,23 @@
 - method: "bench"
   backend:
     - method: "GET"
-      url: 'http://nginx/residence_list.json'
-      allow: 
+      url: "http://nginx:8888/deriv/residence_list.json"
+      allow:
         - residence_list
     - method: "GET"
-      url: 'http://nginx/website_status.json'
-      allow: 
+      url: "http://nginx:8888/deriv/website_status.json"
+      allow:
+        - website_status
+- method: "bench-residence-list"
+  backend:
+    - method: "GET"
+      url: "http://nginx:8888/deriv/residence_list.json"
+      allow:
+        - residence_list
+        - passthrough
+- method: "bench-website-status"
+  backend:
+    - method: "GET"
+      url: "http://nginx:8888/deriv/website_status.json"
+      allow:
         - website_status
